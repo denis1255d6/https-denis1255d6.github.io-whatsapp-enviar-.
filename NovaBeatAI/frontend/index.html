@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NovaBeatAI</title>
+  <style>
+    :root {
+      --bg: #050510;
+      --neon-cyan: #00f5ff;
+      --neon-pink: #ff1cf7;
+      --text: #e8e8ff;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #12122f, var(--bg));
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+    .card {
+      width: min(680px, 92vw);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 0 14px var(--neon-cyan), 0 0 24px var(--neon-pink);
+      background: rgba(5, 5, 16, 0.8);
+    }
+    h1 { font-size: 2.2rem; margin: 0 0 .7rem; color: var(--neon-cyan); }
+    p { line-height: 1.4; }
+    .lang { display: flex; gap: 8px; margin-bottom: 1rem; }
+    button {
+      border: 1px solid var(--neon-pink);
+      background: transparent;
+      color: var(--text);
+      padding: .4rem .8rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    form { display: grid; gap: .7rem; margin-top: 1rem; }
+    input {
+      padding: .8rem;
+      border-radius: 8px;
+      border: 1px solid #3f3f7a;
+      background: #101028;
+      color: var(--text);
+    }
+    .cta {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+      color: #050510;
+      font-weight: 700;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="lang">
+      <button onclick="setLang('pt')">PT</button>
+      <button onclick="setLang('en')">EN</button>
+    </div>
+    <h1>NovaBeatAI</h1>
+    <p id="subtitle"></p>
+
+    <form action="https://example.us1.list-manage.com/subscribe/post" method="post" target="_blank">
+      <input type="email" name="EMAIL" required placeholder="Email" />
+      <button class="cta" type="submit" id="submitText"></button>
+    </form>
+  </main>
+
+  <script>
+    const copy = {
+      pt: {
+        subtitle: 'Crie músicas com IA em segundos. Entre na lista de espera.',
+        submit: 'Quero entrar'
+      },
+      en: {
+        subtitle: 'Create AI music in seconds. Join the waitlist.',
+        submit: 'Join waitlist'
+      }
+    };
+    function setLang(lang) {
+      document.getElementById('subtitle').textContent = copy[lang].subtitle;
+      document.getElementById('submitText').textContent = copy[lang].submit;
+      document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+    }
+    setLang('pt');
+  </script>
+</body>
+</html>
