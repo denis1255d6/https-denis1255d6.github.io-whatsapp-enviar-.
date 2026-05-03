@@ -51,5 +51,16 @@ services:
       fastapi:
         condition: service_healthy
 
+  frontend:
+    image: nginx:1.27-alpine
+    container_name: novabeatai-frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+
 volumes:
   pgdata:

@@ -22,6 +22,6 @@ echo "Subindo NovaBeatAI..."
 docker compose up -d --build
 
 echo "OK. Serviços:"
-echo "- Frontend: abra NovaBeatAI/frontend/index.html no navegador"
+echo "- Frontend: http://localhost:8080"
 echo "- Backend: http://localhost:3000/health"
 echo "- FastAPI: http://localhost:8000/docs"

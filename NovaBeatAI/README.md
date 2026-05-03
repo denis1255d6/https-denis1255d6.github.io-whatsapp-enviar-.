@@ -50,6 +50,7 @@ docker compose up --build
 ```
 
 Serviços expostos:
+- Frontend: http://localhost:8080
 - Backend: http://localhost:3000
 - FastAPI: http://localhost:8000
 - PostgreSQL: localhost:5432
@@ -165,3 +166,13 @@ Crie os secrets no GitHub (`Settings > Secrets and variables > Actions`):
 Workflow: `.github/workflows/deploy.yml`
 - Deploy automático em push para `main`
 - Deploy manual por `workflow_dispatch`
+
+## Verificação rápida local
+
+Depois de subir com `./start.sh`, rode:
+
+```bash
+./check.sh
+```
+
+Isso valida frontend, backend e fastapi em `8080`, `3000`, `8000`.
