@@ -3,226 +3,89 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NovaCanvas AI</title>
+  <title>NovaBeatAI</title>
   <style>
     :root {
-      --bg: #0a0a16;
-      --surface: #12122b;
-      --surface-2: #1a1a35;
+      --bg: #050510;
       --neon-cyan: #00f5ff;
       --neon-pink: #ff1cf7;
-      --text: #f2f2ff;
-      --muted: #b2b2d8;
-      --ok: #53ff9a;
+      --text: #e8e8ff;
     }
-    * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: Inter, system-ui, Arial, sans-serif;
-      background: radial-gradient(circle at top, #181847, var(--bg));
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #12122f, var(--bg));
       color: var(--text);
       min-height: 100vh;
-      padding: 2rem 1rem;
-    }
-    .app {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: grid;
-      gap: 1rem;
-    }
-    .card {
-      border: 1px solid rgba(0, 245, 255, .4);
-      border-radius: 16px;
-      padding: 1.2rem;
-      box-shadow: 0 0 18px rgba(0, 245, 255, .18), 0 0 36px rgba(255, 28, 247, .15);
-      background: rgba(10, 10, 28, 0.9);
-    }
-    .topbar { display: flex; justify-content: space-between; align-items: center; gap: .8rem; }
-    h1 { margin: 0; color: var(--neon-cyan); }
-    .lang { display: flex; gap: .5rem; }
-    button, select {
-      border: 1px solid #3d3d72;
-      background: var(--surface-2);
-      color: var(--text);
-      padding: .6rem .85rem;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 1rem;
-    }
-    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-    textarea, input[type="text"] {
-      width: 100%;
-      border: 1px solid #424275;
-      border-radius: 10px;
-      background: var(--surface);
-      color: var(--text);
-      padding: .8rem;
-    }
-    textarea { min-height: 110px; resize: vertical; }
-    .row { display: grid; gap: .8rem; margin-top: .8rem; }
-    .inline { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
-    .cta {
-      border: 0;
-      font-weight: 700;
-      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
-      color: #0b0b19;
-    }
-    .output {
-      min-height: 420px;
-      background: repeating-linear-gradient(45deg, #151536 0 12px, #0f0f24 12px 24px);
-      border-radius: 14px;
       display: grid;
       place-items: center;
-      text-align: center;
-      color: var(--muted);
-      border: 1px dashed #4b4b91;
-      overflow: hidden;
     }
-    .output img { max-width: 100%; display: block; }
-    .badge {
-      display: inline-block;
-      font-size: .75rem;
-      border: 1px solid rgba(83,255,154,.5);
-      color: var(--ok);
-      padding: .2rem .45rem;
-      border-radius: 999px;
-      margin-top: .5rem;
+    .card {
+      width: min(680px, 92vw);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 0 14px var(--neon-cyan), 0 0 24px var(--neon-pink);
+      background: rgba(5, 5, 16, 0.8);
     }
-    .muted { color: var(--muted); font-size: .93rem; }
+    h1 { font-size: 2.2rem; margin: 0 0 .7rem; color: var(--neon-cyan); }
+    p { line-height: 1.4; }
+    .lang { display: flex; gap: 8px; margin-bottom: 1rem; }
+    button {
+      border: 1px solid var(--neon-pink);
+      background: transparent;
+      color: var(--text);
+      padding: .4rem .8rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    form { display: grid; gap: .7rem; margin-top: 1rem; }
+    input {
+      padding: .8rem;
+      border-radius: 8px;
+      border: 1px solid #3f3f7a;
+      background: #101028;
+      color: var(--text);
+    }
+    .cta {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+      color: #050510;
+      font-weight: 700;
+      border: none;
+    }
   </style>
 </head>
 <body>
-  <main class="app">
-    <section class="card topbar">
-      <div>
-        <h1>NovaCanvas AI Generator</h1>
-        <div class="muted" id="subtitle"></div>
-      </div>
-      <div class="lang">
-        <button onclick="setLang('pt')">PT</button>
-        <button onclick="setLang('en')">EN</button>
-      </div>
-    </section>
+  <main class="card">
+    <div class="lang">
+      <button onclick="setLang('pt')">PT</button>
+      <button onclick="setLang('en')">EN</button>
+    </div>
+    <h1>NovaBeatAI</h1>
+    <p id="subtitle"></p>
 
-    <section class="grid">
-      <form class="card" onsubmit="generateMock(event)">
-        <label id="promptLabel" for="prompt"></label>
-        <textarea id="prompt" placeholder="Ex.: retrato cinematográfico neon, 85mm, ultra detalhado"></textarea>
-
-        <div class="row inline">
-          <div>
-            <label id="styleLabel" for="style"></label>
-            <select id="style">
-              <option value="photoreal">Photorealistic</option>
-              <option value="anime">Anime</option>
-              <option value="cinematic">Cinematic</option>
-              <option value="3d">3D Render</option>
-            </select>
-          </div>
-          <div>
-            <label id="ratioLabel" for="ratio"></label>
-            <select id="ratio">
-              <option>1:1</option>
-              <option>9:16</option>
-              <option>16:9</option>
-              <option>4:5</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <label id="negativeLabel" for="negative"></label>
-          <input id="negative" type="text" placeholder="blur, watermark, low quality" />
-        </div>
-
-        <div class="row inline">
-          <button class="cta" type="submit" id="generateBtn"></button>
-          <button type="button" onclick="randomPrompt()" id="randomBtn"></button>
-        </div>
-        <p class="muted" id="safetyText"></p>
-      </form>
-
-      <section class="card">
-        <div class="output" id="output">
-          <div>
-            <strong id="outputTitle"></strong>
-            <p id="outputText"></p>
-          </div>
-        </div>
-      </section>
-    </section>
+    <form action="https://example.us1.list-manage.com/subscribe/post" method="post" target="_blank">
+      <input type="email" name="EMAIL" required placeholder="Email" />
+      <button class="cta" type="submit" id="submitText"></button>
+    </form>
   </main>
 
   <script>
     const copy = {
       pt: {
-        subtitle: 'Gere imagens com IA via prompt, estilo e proporção.',
-        prompt: 'Seu prompt',
-        style: 'Estilo',
-        ratio: 'Proporção',
-        negative: 'Prompt negativo (opcional)',
-        generate: 'Gerar imagem',
-        random: 'Prompt aleatório',
-        safety: 'Este demo bloqueia conteúdo explícito/NSFW automaticamente.',
-        outputTitle: 'Seu resultado aparecerá aqui',
-        outputText: 'Preencha o prompt e clique em "Gerar imagem".'
+        subtitle: 'Crie músicas com IA em segundos. Entre na lista de espera.',
+        submit: 'Quero entrar'
       },
       en: {
-        subtitle: 'Generate AI images with prompt, style, and ratio controls.',
-        prompt: 'Your prompt',
-        style: 'Style',
-        ratio: 'Aspect ratio',
-        negative: 'Negative prompt (optional)',
-        generate: 'Generate image',
-        random: 'Random prompt',
-        safety: 'This demo auto-blocks explicit/NSFW content.',
-        outputTitle: 'Your result will appear here',
-        outputText: 'Fill in the prompt and click "Generate image".'
+        subtitle: 'Create AI music in seconds. Join the waitlist.',
+        submit: 'Join waitlist'
       }
     };
-
-    const promptSamples = [
-      'Retrato cyberpunk com iluminação neon azul e rosa',
-      'Cidade futurista ao amanhecer, volumetric light, cinematic',
-      'Ilustração fantasy de guerreira com armadura dourada'
-    ];
-
     function setLang(lang) {
-      const t = copy[lang];
+      document.getElementById('subtitle').textContent = copy[lang].subtitle;
+      document.getElementById('submitText').textContent = copy[lang].submit;
       document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
-      subtitle.textContent = t.subtitle;
-      promptLabel.textContent = t.prompt;
-      styleLabel.textContent = t.style;
-      ratioLabel.textContent = t.ratio;
-      negativeLabel.textContent = t.negative;
-      generateBtn.textContent = t.generate;
-      randomBtn.textContent = t.random;
-      safetyText.textContent = t.safety;
-      outputTitle.textContent = t.outputTitle;
-      outputText.textContent = t.outputText;
     }
-
-    function randomPrompt() {
-      prompt.value = promptSamples[Math.floor(Math.random() * promptSamples.length)];
-    }
-
-    function generateMock(event) {
-      event.preventDefault();
-      const text = prompt.value.trim();
-      if (!text) return;
-
-      output.innerHTML = `
-        <div>
-          <p><strong>Prompt:</strong> ${text}</p>
-          <p><strong>Style:</strong> ${style.value} · <strong>Ratio:</strong> ${ratio.value}</p>
-          <span class="badge">Demo mode · API não conectada</span>
-        </div>`;
-    }
-
     setLang('pt');
   </script>
 </body>
