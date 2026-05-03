@@ -1,6 +1,6 @@
-from uuid import uuid4
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
+from uuid import uuid4
 
 app = FastAPI(title="NovaBeatAI Generator API")
 
@@ -16,8 +16,15 @@ class GenerateResponse(BaseModel):
     url: str
 
 
+@app.get("/health")
+def health_check():
+    """Health check endpoint"""
+    return {"status": "ok", "service": "fastapi"}
+
+
 @app.post('/generate', response_model=GenerateResponse)
 def generate_music(payload: GenerateRequest):
+    """Generate music based on style, BPM and description"""
     music_id = str(uuid4())
     return {
         'id': music_id,
