@@ -14,5 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: Build the Docker image (backend)
+      run: docker build ./NovaBeatAI/backend --file ./NovaBeatAI/backend/Dockerfile --tag my-image-name:$(date +%s)
+    - name: Build the Docker image (fastapi)
+      run: docker build ./NovaBeatAI/fastapi --file ./NovaBeatAI/fastapi/Dockerfile --tag my-fastapi-image:$(date +%s)
