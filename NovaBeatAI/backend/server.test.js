@@ -1,4 +1,6 @@
 const request = require('supertest');
+process.env.DATABASE_URL = process.env.DATABASE_URL || 'postgres://user:pass@localhost:5432/testdb';
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-secret';
 const { app, validatePassword } = require('./server');
 
 describe('Password Validation', () => {

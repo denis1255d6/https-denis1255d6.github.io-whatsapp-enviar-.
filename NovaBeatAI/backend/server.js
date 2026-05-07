@@ -5,11 +5,22 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const { Pool } = require('pg');
+const crypto = require('crypto');
 
 const app = express();
 app.use(helmet());
 app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
 app.use(express.json({ limit: '1mb' }));
+app.use((req, res, next) => {
+  const incomingTraceId = req.header('x-trace-id');
+  req.traceId = incomingTraceId || crypto.randomUUID();
+  res.setHeader('x-trace-id', req.traceId);
+  next();
+});
+
+function sendInternalError(res, traceId, message = 'internal error') {
+  return res.status(500).json({ error: message, trace_id: traceId });
+}
 
 app.get('/health', async (_req, res) => {
   try {
@@ -75,7 +86,7 @@ app.post('/api/register', async (req, res) => {
     return res.status(201).json(rows[0]);
   } catch (err) {
     if (err.code === '23505') return res.status(409).json({ error: 'email already exists' });
-    return res.status(500).json({ error: 'internal error' });
+    return sendInternalError(res, req.traceId);
   }
 });
 
@@ -112,8 +123,9 @@ app.post('/api/tracks', auth, async (req, res) => {
 });
 
 app.use((err, _req, res, _next) => {
-  console.error(err);
-  res.status(500).json({ error: 'unexpected error' });
+  const traceId = _req.traceId || crypto.randomUUID();
+  console.error(`[trace_id=${traceId}]`, err);
+  sendInternalError(res, traceId, 'unexpected error');
 });
 
 if (process.env.NODE_ENV !== 'test') {
