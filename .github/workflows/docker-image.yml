@@ -8,8 +8,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME_BACKEND: ${{ github.repository }}/backend
-  IMAGE_NAME_FASTAPI: ${{ github.repository }}/fastapi
+  IMAGE_NAME_BACKEND: ${{ github.repository_owner }}/novabeat-backend
+  IMAGE_NAME_FASTAPI: ${{ github.repository_owner }}/novabeat-fastapi
 
 jobs:
   test:
