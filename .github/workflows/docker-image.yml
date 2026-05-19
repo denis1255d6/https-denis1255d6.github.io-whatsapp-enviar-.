@@ -8,8 +8,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME_BACKEND: ${{ github.repository_owner }}/novabeat-backend
-  IMAGE_NAME_FASTAPI: ${{ github.repository_owner }}/novabeat-fastapi
+  IMAGE_NAME_BACKEND: novabeat-backend
+  IMAGE_NAME_FASTAPI: novabeat-fastapi
 
 jobs:
   test:
@@ -87,7 +87,7 @@ jobs:
       id: meta_backend
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}
+        images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME_BACKEND }}
         tags: |
           type=ref,event=branch
           type=semver,pattern={{version}}
@@ -98,7 +98,7 @@ jobs:
       id: meta_fastapi
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FASTAPI }}
+        images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME_FASTAPI }}
         tags: |
           type=ref,event=branch
           type=semver,pattern={{version}}
